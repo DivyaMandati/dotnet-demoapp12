@@ -7,10 +7,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: mcr.microsoft.com/dotnet/sdk:6.0-alpine
 
-    container:
-      image: mcr.microsoft.com/dotnet/sdk:6.0-alpine
+    
 
     steps:
     - name: Checkout repository
