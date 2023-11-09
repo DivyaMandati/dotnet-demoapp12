@@ -40,9 +40,5 @@ jobs:
         path: artifacts
       if: always()
 
-    - name: Set Artifact Retention
-      uses: actions/retain-artifacts@v0
-      with:
-        name: dotnet-demoapp
-        retention-days: 5
-      if: always()
+    
+      
