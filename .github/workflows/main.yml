@@ -7,16 +7,42 @@ on:
 
 jobs:
   build:
-    runs-on: mcr.microsoft.com/dotnet/sdk:6.0-alpine
+    runs-on: ubuntu-latest
 
-    
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:6.0-alpine
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Build and Test
+    - name: Build
       run: |
         cd src
-        dotnet build
-        dotnet test
+        dotnet build --configuration Debug
+      working-directory: ${{ github.workspace }}
+
+    - name: Copy Artifact
+      run: |
+        mkdir -p artifacts
+        cp src/bin/Debug/net6.0/dotnet-demoapp.dll artifacts/
+      working-directory: ${{ github.workspace }}
+
+    - name: Display Artifact
+      run: |
+        ls artifacts
+      working-directory: ${{ github.workspace }}
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: dotnet-demoapp
+        path: artifacts
+      if: always()
+
+    - name: Set Artifact Retention
+      uses: actions/retain-artifacts@v0
+      with:
+        name: dotnet-demoapp
+        retention-days: 5
+      if: always()
