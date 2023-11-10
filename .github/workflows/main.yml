@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build and Deploy
 
 on:
   push:
@@ -40,5 +40,33 @@ jobs:
         path: artifacts
       if: always()
 
-    
-      
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0'
+
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: dotnet-demoapp
+        path: artifacts
+
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: '<Your-Azure-Web-App-Name>'
+        slot-name: 'production'  # Optional: Specify the deployment slot
+        package: ./artifacts/dotnet-demoapp.dll
