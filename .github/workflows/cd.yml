@@ -21,7 +21,7 @@ jobs:
     - name: Download Artifact
       uses: actions/download-artifact@v2
       with:
-        name: dotnet-demoapp
+        name: dotnet-demoapp12
         path: artifacts
 
     - name: Log in to Azure
