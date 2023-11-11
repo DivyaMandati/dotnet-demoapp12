@@ -69,9 +69,13 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Install Azure CLI on runner
+      run: |
+        az --version
+
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: '<Your-Azure-Web-App-Name>'
+        app-name: 'web-app-004'
         slot-name: 'production'  # Optional: Specify the deployment slot
         package: ./artifacts/dotnet-demoapp.dll
